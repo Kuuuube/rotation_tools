@@ -7,7 +7,8 @@ using OpenTabletDriver.Plugin.Output;
 namespace rotation_tools;
 
 [PluginName("Rotation to Tilt")]
-public class RotationToTilt : RotationToTiltBase {
+public class RotationToTilt : RotationToTiltBase
+{
     // Uses simple stretch mapping
     public static Vector2 CircleToSquare(Vector2 point)
     {
@@ -43,10 +44,12 @@ public class RotationToTilt : RotationToTiltBase {
         return radians;
     }
 
-    public Vector2 ConvertRotation(uint rotation, uint maxRotation) {
+    public Vector2 ConvertRotation(uint rotation, uint maxRotation)
+    {
         float radians = RotationToRadians(rotation, maxRotation, RotationDegreesOffset);
         Vector2 unitCircleTilt = new(MathF.Cos(radians), MathF.Sin(radians));
-        if (UnitSquare) {
+        if (UnitSquare)
+        {
             unitCircleTilt = CircleToSquare(unitCircleTilt);
         }
         return unitCircleTilt * TiltMultiplier;
@@ -54,9 +57,11 @@ public class RotationToTilt : RotationToTiltBase {
 
     public override event Action<IDeviceReport>? Emit;
 
-    public override void Consume(IDeviceReport value) {
+    public override void Consume(IDeviceReport value)
+    {
         uint? maxRotation = GetMaxRotation();
-        if (value is IAbsolutePositionReport report && report is IRotationReport rotationReport && report is ITiltReport tiltReport && maxRotation != null) {
+        if (value is IAbsolutePositionReport report && report is IRotationReport rotationReport && report is ITiltReport tiltReport && maxRotation != null)
+        {
             tiltReport.Tilt = ConvertRotation(rotationReport.Rotation, (uint)maxRotation);
             value = report;
         }
