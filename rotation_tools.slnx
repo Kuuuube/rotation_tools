@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="rotation_tools/rotation_tools.csproj" />
+  <Folder Name="/.modules/" />
+  <Folder Name="/.modules/OpenTabletDriver/">
+    <Project Path=".modules/OpenTabletDriver/OpenTabletDriver.Configurations/OpenTabletDriver.Configurations.csproj" />
+    <Project Path=".modules/OpenTabletDriver/OpenTabletDriver.Native/OpenTabletDriver.Native.csproj" />
+    <Project Path=".modules/OpenTabletDriver/OpenTabletDriver.Plugin/OpenTabletDriver.Plugin.csproj" />
+    <Project Path=".modules/OpenTabletDriver/OpenTabletDriver/OpenTabletDriver.csproj" />
+  </Folder>
+</Solution>
