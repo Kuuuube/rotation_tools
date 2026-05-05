@@ -74,9 +74,9 @@ public class RotationToTilt : RotationToTiltBase
     [Property("Tilt Multiplier"), DefaultPropertyValue(64u)]
     public uint TiltMultiplier { set; get; }
 
-    [BooleanProperty("Convert to unit square instead of unit circle", "")]
-    public bool UnitSquare { set; get; }
-
     [Property("Rotation Degrees Offset"), DefaultPropertyValue(0u), Unit("°")]
     public uint RotationDegreesOffset { set; get; }
+
+    [BooleanProperty("Convert to unit square instead of unit circle", "")]
+    public bool UnitSquare { set; get; }
 }
