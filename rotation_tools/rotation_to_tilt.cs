@@ -37,16 +37,17 @@ public class RotationToTilt : RotationToTiltBase
         }
     }
 
-    public static float RotationToRadians(uint rotation, uint maxRotation, uint degreesOffset)
+    public static float RotationToRadians(int rotation, int minRotation, uint maxRotation, uint degreesOffset)
     {
-        float degrees = (float)rotation / (float)maxRotation * 360f + degreesOffset;
+        float normalizedRotation = ((float)rotation - minRotation) / (maxRotation - minRotation);
+        float degrees = normalizedRotation * 360f + degreesOffset;
         float radians = MathF.PI / 180 * degrees;
         return radians;
     }
 
-    public Vector2 ConvertRotation(uint rotation, uint maxRotation)
+    public Vector2 ConvertRotation(int rotation, int minRotation, uint maxRotation)
     {
-        float radians = RotationToRadians(rotation, maxRotation, RotationDegreesOffset);
+        float radians = RotationToRadians(rotation, minRotation, maxRotation, RotationDegreesOffset);
         Vector2 unitCircleTilt = new(MathF.Cos(radians), MathF.Sin(radians));
         if (UnitSquare)
         {
@@ -61,10 +62,11 @@ public class RotationToTilt : RotationToTiltBase
     {
         if (value == null) return;
 
+        int? minRotation = GetMinRotation();
         uint? maxRotation = GetMaxRotation();
-        if (value is IAbsolutePositionReport report && report is IRotationReport rotationReport && report is ITiltReport tiltReport && maxRotation != null)
+        if (value is IAbsolutePositionReport report && report is IRotationReport rotationReport && report is ITiltReport tiltReport && maxRotation != null && minRotation != null)
         {
-            tiltReport.Tilt = ConvertRotation(rotationReport.Rotation, (uint)maxRotation);
+            tiltReport.Tilt = ConvertRotation(rotationReport.Rotation, (int)minRotation, (uint)maxRotation);
             value = report;
         }
 

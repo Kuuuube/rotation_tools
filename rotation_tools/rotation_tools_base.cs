@@ -8,6 +8,22 @@ namespace rotation_tools;
 
 public abstract class RotationToTiltBase : IPositionedPipelineElement<IDeviceReport>
 {
+    public int? GetMinRotation()
+    {
+        if (output_mode_type == OutputModeType.absolute && absolute_output_mode != null)
+        {
+            return absolute_output_mode.Tablet?.Properties.Specifications.Pen.MinRotation;
+        }
+
+        if (output_mode_type == OutputModeType.relative && relative_output_mode != null)
+        {
+            return relative_output_mode.Tablet?.Properties.Specifications.Pen.MinRotation;
+        }
+
+        TryResolveOutputMode();
+        return default;
+    }
+
     public uint? GetMaxRotation()
     {
         if (output_mode_type == OutputModeType.absolute && absolute_output_mode != null)
