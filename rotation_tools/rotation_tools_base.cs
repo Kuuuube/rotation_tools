@@ -12,12 +12,12 @@ public abstract class RotationToTiltBase : IPositionedPipelineElement<IDeviceRep
     {
         if (output_mode_type == OutputModeType.absolute && absolute_output_mode != null)
         {
-            return absolute_output_mode.Tablet.Properties.Specifications.Pen.MaxRotation;
+            return absolute_output_mode.Tablet?.Properties.Specifications.Pen.MaxRotation;
         }
 
         if (output_mode_type == OutputModeType.relative && relative_output_mode != null)
         {
-            return relative_output_mode.Tablet.Properties.Specifications.Pen.MaxRotation;
+            return relative_output_mode.Tablet?.Properties.Specifications.Pen.MaxRotation;
         }
 
         TryResolveOutputMode();
@@ -53,8 +53,8 @@ public abstract class RotationToTiltBase : IPositionedPipelineElement<IDeviceRep
         }
     }
 
-    public abstract event Action<IDeviceReport> Emit;
-    public abstract void Consume(IDeviceReport value);
+    public abstract event Action<IDeviceReport>? Emit;
+    public abstract void Consume(IDeviceReport? value);
     public abstract PipelinePosition Position { get; }
 }
 enum OutputModeType

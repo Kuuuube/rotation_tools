@@ -57,8 +57,10 @@ public class RotationToTilt : RotationToTiltBase
 
     public override event Action<IDeviceReport>? Emit;
 
-    public override void Consume(IDeviceReport value)
+    public override void Consume(IDeviceReport? value)
     {
+        if (value == null) return;
+
         uint? maxRotation = GetMaxRotation();
         if (value is IAbsolutePositionReport report && report is IRotationReport rotationReport && report is ITiltReport tiltReport && maxRotation != null)
         {
