@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../.modules/OpenTabletDriver/OpenTabletDriver.Plugin/OpenTabletDriver.Plugin.csproj" />
-    <ProjectReference Include="..\.modules\OpenTabletDriver\OpenTabletDriver\OpenTabletDriver.csproj" />
   </ItemGroup>
 
 </Project>

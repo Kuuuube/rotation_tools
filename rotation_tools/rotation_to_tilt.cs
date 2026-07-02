@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using OpenTabletDriver.Plugin.Attributes;
 using OpenTabletDriver.Plugin.Tablet;
 using OpenTabletDriver.Plugin.Output;
@@ -7,7 +6,7 @@ using OpenTabletDriver.Plugin.Output;
 namespace rotation_tools;
 
 [PluginName("Rotation to Tilt")]
-public class RotationToTilt : RotationToTiltBase
+public class RotationToTilt : IPositionedPipelineElement<IDeviceReport>
 {
     // Uses simple stretch mapping
     public static Vector2 CircleToSquare(Vector2 point)
@@ -56,14 +55,14 @@ public class RotationToTilt : RotationToTiltBase
         return unitCircleTilt * TiltMultiplier;
     }
 
-    public override event Action<IDeviceReport>? Emit;
+    public event Action<IDeviceReport>? Emit;
 
-    public override void Consume(IDeviceReport? value)
+    public void Consume(IDeviceReport? value)
     {
         if (value == null) return;
 
-        int? minRotation = GetMinRotation();
-        uint? maxRotation = GetMaxRotation();
+        int? minRotation = TabletReference?.Properties.Specifications.Pen.MinRotation;
+        uint? maxRotation = TabletReference?.Properties.Specifications.Pen.MaxRotation;
         if (value is IAbsolutePositionReport report && report is IRotationReport rotationReport && report is ITiltReport tiltReport && maxRotation != null && minRotation != null)
         {
             tiltReport.Tilt = ConvertRotation(rotationReport.Rotation, (int)minRotation, (uint)maxRotation);
@@ -73,7 +72,10 @@ public class RotationToTilt : RotationToTiltBase
         Emit?.Invoke(value);
     }
 
-    public override PipelinePosition Position => PipelinePosition.PostTransform;
+    public PipelinePosition Position => PipelinePosition.PostTransform;
+
+    [TabletReference]
+    public TabletReference? TabletReference { set; get; }
 
     [Property("Tilt Multiplier"), DefaultPropertyValue(64u)]
     public uint TiltMultiplier { set; get; }
